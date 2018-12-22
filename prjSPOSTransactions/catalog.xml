@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
+    <system systemId="http://2.pmam.com/CRM2013/MobileAppV4_5_1/CRM_LoyalityProgramSvc.asmx?wsdl" uri="xml-resources/web-service-references/CRM_LoyalityProgramSvc/wsdl/2.pmam.com/CRM2013/MobileAppV4_5_1/CRM_LoyalityProgramSvc.asmx.wsdl"/>
+</catalog>

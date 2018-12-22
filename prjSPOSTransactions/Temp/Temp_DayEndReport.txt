@@ -1,0 +1,55 @@
+             DAY END REPORT
+
+  POS Code    :P01
+  POS Name    :DALES EDEN
+  POS Date    :2015-04-06 18:36:22
+  Day End By  :SANGUINE
+  --------------------------------------
+   1. HOME DELIVERY                403.00
+   2. DINING                      1200.00
+   3. TAKE AWAY                      0.00
+  --------------------------------------
+   4. TOTAL SALES                 1603.00
+  --------------------------------------
+   5. DISCOUNT                       0.00
+   6. FLOAT                          0.00
+   7. CASH                        1603.00
+   8. ADVANCE                       50.00
+   9. TRANSFER IN                    0.00
+  --------------------------------------
+  10. TOTAL RECEIPT               1653.00
+  --------------------------------------
+  11. PAYMENT                        0.00
+  12. WITHDRAWAL                     0.00
+  13. TRANSFER OUT                   0.00
+  14. REFUND                         0.00
+  --------------------------------------
+  15. TOTAL PAYMENTS                 0.00
+  --------------------------------------
+  16. CASH IN HAND                1653.00
+  --------------------------------------
+  17. No. OF BILLS                   2.00
+  18. No. OF VOIDED BILLS            0.00
+  19. No. OF MODIFIED BILLS          0.00
+  20. NO. OF PAX                        0
+  21. No. OF HOME DEL                   1
+  22. No. OF TAKE AWAY                  0
+  23. No. OF NC KOT                     0
+  24. No. OF COMPLIMENTARY BILLS          0
+  25. No. OF VOID KOT                   0
+  --------------------------------------
+      BILLING SETTLEMENT BREAK UP
+  --------------------------------------
+  Cash                            1603.00
+  --------------------------------------
+     TOTAL                        1603.00
+  --------------------------------------
+   TAX Des             Taxable   Tax Amt   
+  --------------------------------------
+
+  --------------------------------------
+
+
+
+
+V

@@ -1,0 +1,37 @@
+              TAX INVOICE
+            SAIRAJ PURE VEG
+   SHOP NO 5 AND 6, NANDANVAN BLDG, 
+    PLOT NO 191, SEC 19, ULWE NODE,
+              NAVI MUMBAI
+                 MUMBAI
+  TEL NO.   : 8689800052
+  EMAIL ID  : vaishyankit@gmail.com
+  --------------------------------------
+  BILL NO.    : P0103520
+  DATE & TIME : 02-05-2015 04:16 PM 
+
+  --------------------------------------              ORDER DETAIL
+  --------------------------------------
+  MESSAGE     :}}
+  SHAPE       :}}
+
+  --------------------------------------
+      QTY  ITEM NAME                  AMT
+  --------------------------------------
+     1.00  OPEN ITEM                12.00
+  --------------------------------------
+  SUB TOTAL                         12.00
+  ADVANCE                            7.00
+  --------------------------------------
+  TOTAL(ROUNDED)                     5.00
+  --------------------------------------
+  --------------------------------------
+        (INCLUSIVE OF ALL TAXES)
+
+     THANK YOU AND VISIT AGAIN !!!
+                 SUPER
+
+
+
+
+V
