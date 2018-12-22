@@ -80,7 +80,7 @@ public class frmDirectBiller extends javax.swing.JFrame
     private int menuCount, nextCnt, nextClick, nextItemClick = 0;
     private String[] menuNames, menuNames1, itemNames;
     private String menuHeadCode, sql;
-    private double totalAmt = 0.00, selectedQty, noOfBoxes, itemWeightPerBox = 0.00,dblDiscountAmt=0.00;
+    private double totalAmt = 0.00, selectedQty, noOfBoxes, dblDiscountAmt=0.00;
     boolean PervBil = false, flgChangeQty = false;
     private String btnforeground[];
     public static String Itemcode;
@@ -98,7 +98,6 @@ public class frmDirectBiller extends javax.swing.JFrame
     private String cmsMemberCode, cmsMemberName;
     public int tblStartIndex, tblIndex;
     private String temp_ItemCode;
-    private Double MaxQTYOfModifierWithTDHItem;
     private boolean isModifierSelect;
     private HashMap<String, frmDirectBiller.clsModifierGroupDtl> hm_ModifierGroup = null;
     private HashMap<String, frmDirectBiller.clsModifierDtl> hm_ModifierDtl = null;
@@ -1353,7 +1352,6 @@ public class frmDirectBiller extends javax.swing.JFrame
 	    if (clsGlobalVarClass.ListTDHOnModifierItem.contains(itemCode))
 	    {
 		flag_isTDHModifier_Item = true;
-		MaxQTYOfModifierWithTDHItem = clsGlobalVarClass.ListTDHOnModifierItemMaxQTY.get((clsGlobalVarClass.ListTDHOnModifierItem.indexOf(itemCode)));
 		clsDirectBillerItemDtl ob1 = new clsDirectBillerItemDtl(itemName, itemCode, qty, amt, false, "", "N", "", dblPrice, "", getSeqNo(), 0);
 		serNo++;
 		frmTDHDialog ob = new frmTDHDialog(this, true, itemCode, ob1);
@@ -8206,8 +8204,7 @@ public class frmDirectBiller extends javax.swing.JFrame
 	    else if (clsGlobalVarClass.ListTDHOnModifierItem.contains(itemCode))
 	    {
 		flag_isTDHModifier_Item = true;
-		MaxQTYOfModifierWithTDHItem = clsGlobalVarClass.ListTDHOnModifierItemMaxQTY.get((clsGlobalVarClass.ListTDHOnModifierItem.indexOf(itemCode)));
-		clsDirectBillerItemDtl ob1 = new clsDirectBillerItemDtl(itemName, itemCode, qty, amt, false, "", "N", "", dblPrice, "", getSeqNo(), 0);
+                clsDirectBillerItemDtl ob1 = new clsDirectBillerItemDtl(itemName, itemCode, qty, amt, false, "", "N", "", dblPrice, "", getSeqNo(), 0);
 		serNo++;
 		frmTDHDialog ob = new frmTDHDialog(this, true, itemCode, ob1);
 		ob.setVisible(true);
