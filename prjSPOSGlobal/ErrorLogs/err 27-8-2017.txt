@@ -1,0 +1,6 @@
+Date Time= 27-8-2017 11:10:30
+java.lang.NullPointerException
+	at com.POSGlobal.controller.clsPosConfigFile.<init>(clsPosConfigFile.java:77)
+	at com.POSGlobal.controller.clsDatabaseConnection.<init>(clsDatabaseConnection.java:22)
+	at com.POSGlobal.controller.clsDatabaseConnection.main(clsDatabaseConnection.java:167)
+
