@@ -1,0 +1,14 @@
+Date Time= 24-12-2017 21:23:24
+com.mysql.jdbc.MysqlDataTruncation: Data truncation: Incorrect date value: '24-12-2017 20:59:08' for column 'dteTransDate' at row 1
+	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:3607)
+	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:3541)
+	at com.mysql.jdbc.MysqlIO.sendCommand(MysqlIO.java:2002)
+	at com.mysql.jdbc.MysqlIO.sqlQueryDirect(MysqlIO.java:2163)
+	at com.mysql.jdbc.ConnectionImpl.execSQL(ConnectionImpl.java:2618)
+	at com.mysql.jdbc.StatementImpl.executeUpdate(StatementImpl.java:1749)
+	at com.mysql.jdbc.StatementImpl.executeUpdate(StatementImpl.java:1666)
+	at com.POSGlobal.controller.clsDatabaseConnection.execute(clsDatabaseConnection.java:109)
+	at com.POSTransaction.view.frmBillSettlement.funOnlySettleBillDB(frmBillSettlement.java:8703)
+	at com.POSTransaction.view.frmBillSettlement.access$9800(frmBillSettlement.java:104)
+	at com.POSTransaction.view.frmBillSettlement$115.run(frmBillSettlement.java:15597)
+
