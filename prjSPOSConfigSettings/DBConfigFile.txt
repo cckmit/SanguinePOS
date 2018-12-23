@@ -1,0 +1,17 @@
+mysql
+JPOS
+wEH3B4LzhBbelfXVPVBqgw==
+w56noLslcJagGJ4770BGpw==
+localhost
+3306
+E:\My Workspace\SPOS\LatestSPOS\prjSPOSStartUp\DBBackup
+D:\SANGUINE\Export Files
+Windows
+NA
+Inbuild
+true
+182.74.139.211\d\Test Server\dist
+false
+C:\Program Files\MySQL\MySQL Server 5.5\bin\mysqldump
+false
+NA
