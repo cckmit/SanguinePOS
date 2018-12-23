@@ -5407,6 +5407,48 @@ public class clsUtility implements Cloneable
 	    e.printStackTrace();
 	}
     }
+    // Function to print only Text documents    
+    public void funPrintTextDocumentsToPrinter(String printerName, String fileName)
+    {
+	try
+	{
+
+	    if ("windows".equalsIgnoreCase(clsPosConfigFile.gPrintOS))
+	    {
+
+		PrintRequestAttributeSet pras = new HashPrintRequestAttributeSet();
+		DocFlavor flavor = DocFlavor.INPUT_STREAM.AUTOSENSE;
+
+		int printerIndex = 0;
+		PrintService printService[] = PrintServiceLookup.lookupPrintServices(flavor, pras);
+		for (int i = 0; i < printService.length; i++)
+		{
+
+		    if (printerName.equalsIgnoreCase(printService[i].getName()))
+		    {
+			printerIndex = i;
+			break;
+		    }
+		}
+
+		DocPrintJob job = printService[printerIndex].createPrintJob();
+		FileInputStream fis = new FileInputStream(fileName);
+		DocAttributeSet das = new HashDocAttributeSet();
+		Doc doc = new SimpleDoc(fis, flavor, das);
+		job.print(doc, pras);
+	    }
+	    else if ("linux".equalsIgnoreCase(clsPosConfigFile.gPrintOS))
+	    {
+		Process process = Runtime.getRuntime().exec("lpr -P " + printerName + " " + fileName, null);
+	    }
+	}
+	catch (Exception e)
+	{
+	    funShowDBConnectionLostErrorMessage(e);
+	    e.printStackTrace();
+	}
+    }
+
 
     public int funBackupAndMailDB(String backupFilePath) throws Exception
     {

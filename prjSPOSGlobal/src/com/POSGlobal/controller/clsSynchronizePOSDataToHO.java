@@ -4709,10 +4709,10 @@ public class clsSynchronizePOSDataToHO
 			//System.out.println("Bill Series Master tblbillseriesbilldtl= " + val);
 			break;
 			
-		    case "POS":
-			val = funFetchMasterData("tblposmaster");
-			System.out.println("POS Master tblposmaster= " + val);
-			break;
+//		    case "POS":
+//			val = funFetchMasterData("tblposmaster");
+//			System.out.println("POS Master tblposmaster= " + val);
+//			break;
 			
 		    case "SubMenuHead":
 			val = funFetchMasterData("tblsubmenuhead");
@@ -7104,10 +7104,10 @@ public class clsSynchronizePOSDataToHO
 		    retValue = funInsertSubMenuHeadMasterData(mJsonArray);
 		    break;
 		    
-		case "tblposmaster":
-		    mJsonArray = (JSONArray) jObj.get("tblposmaster");
-		    retValue = funInsertPOSMasterData(mJsonArray);
-		    break;
+//		case "tblposmaster":
+//		    mJsonArray = (JSONArray) jObj.get("tblposmaster");
+//		    retValue = funInsertPOSMasterData(mJsonArray);
+//		    break;
 
 	    }
 	}
@@ -9297,63 +9297,63 @@ public class clsSynchronizePOSDataToHO
 	}
 	return retVal;
     }
-    
-    private int funInsertPOSMasterData(JSONArray mJsonArray)
-    {
-	int retVal = 0;
-	try
-	{
-	    StringBuilder sb = null;
-	    String insertValues = "";
-	    String query = "insert into tblposmaster values";
-	    JSONObject mJsonObject = new JSONObject();
-	    String deleteSql = "";
-
-	    for (int i = 0; i < mJsonArray.size(); i++)
-	    {
-		mJsonObject = (JSONObject) mJsonArray.get(i);
-		String strPOSCode=mJsonObject.get("Column5").toString();
-		if(mJsonObject.get("Column5").toString().isEmpty()){
-		    System.out.println("Property POS Code not found");
-		    break;
-		}else{
-		    strPOSCode=strPOSCode.substring(strPOSCode.lastIndexOf(".")+1,strPOSCode.length());
-		    deleteSql = "delete from tblposmaster where strPosCode='" + strPOSCode + "' ";
-		    dbMysql.execute(deleteSql);
-		    insertValues += "('" + strPOSCode + "','" + mJsonObject.get("Column2") + "'"
-			    + ",'" + mJsonObject.get("Column3") + "','" + mJsonObject.get("Column4") + "'"
-			    + ",'" + mJsonObject.get("Column5") + "','" + mJsonObject.get("Column6") + "'"
-			    + ",'" + mJsonObject.get("Column7") + "','" + mJsonObject.get("Column8") + "'"
-			    + ",'" + mJsonObject.get("Column9") + "','" + mJsonObject.get("Column10") + "'"
-			    + ",'" + mJsonObject.get("Column11") + "','" + mJsonObject.get("Column12") + "'"
-			    + ",'" + mJsonObject.get("Column13") + "','" + mJsonObject.get("Column14") + "'"
-			    + ",'" + mJsonObject.get("Column15") + "','" + mJsonObject.get("Column16") + "'"
-			    + ",'" + mJsonObject.get("Column17") + "','" + mJsonObject.get("Column18") + "'"
-			    + ",'" + mJsonObject.get("Column19") + "','" + mJsonObject.get("Column20") + "'"
-			    + ",'" + mJsonObject.get("Column21") + "','" + mJsonObject.get("Column22") + "'"
-			    + ",'" + mJsonObject.get("Column23") + "','" + mJsonObject.get("Column24") + "'"
-			    + ",'" + mJsonObject.get("Column25") + "','" + mJsonObject.get("Column26") + "'"
-			    + ",'" + gClientCode + "','" + mJsonObject.get("Column28") + "'),";
-		    //System.out.println(insertValues); 
-		}
-		
-	    }
-	    if (mJsonArray.size() > 0)
-	    {
-		sb = new StringBuilder(insertValues);
-		insertValues = sb.delete(sb.lastIndexOf(","), sb.length()).toString();
-		query = query + insertValues;
-		sb = new StringBuilder(query);
-		//query = sb.delete(sb.lastIndexOf(","), sb.length()).toString();
-		retVal = dbMysql.execute(query);
-	    }
-	}
-	catch (Exception e)
-	{
-	    e.printStackTrace();
-	}
-	return retVal;
-    }
+//    
+//    private int funInsertPOSMasterData(JSONArray mJsonArray)
+//    {
+//	int retVal = 0;
+//	try
+//	{
+//	    StringBuilder sb = null;
+//	    String insertValues = "";
+//	    String query = "insert into tblposmaster values";
+//	    JSONObject mJsonObject = new JSONObject();
+//	    String deleteSql = "";
+//
+//	    for (int i = 0; i < mJsonArray.size(); i++)
+//	    {
+//		mJsonObject = (JSONObject) mJsonArray.get(i);
+//		String strPOSCode=mJsonObject.get("Column5").toString();
+//		if(mJsonObject.get("Column5").toString().isEmpty()){
+//		    System.out.println("Property POS Code not found");
+//		    break;
+//		}else{
+//		    strPOSCode=strPOSCode.substring(strPOSCode.lastIndexOf(".")+1,strPOSCode.length());
+//		    deleteSql = "delete from tblposmaster where strPosCode='" + strPOSCode + "' ";
+//		    dbMysql.execute(deleteSql);
+//		    insertValues += "('" + strPOSCode + "','" + mJsonObject.get("Column2") + "'"
+//			    + ",'" + mJsonObject.get("Column3") + "','" + mJsonObject.get("Column4") + "'"
+//			    + ",'" + mJsonObject.get("Column5") + "','" + mJsonObject.get("Column6") + "'"
+//			    + ",'" + mJsonObject.get("Column7") + "','" + mJsonObject.get("Column8") + "'"
+//			    + ",'" + mJsonObject.get("Column9") + "','" + mJsonObject.get("Column10") + "'"
+//			    + ",'" + mJsonObject.get("Column11") + "','" + mJsonObject.get("Column12") + "'"
+//			    + ",'" + mJsonObject.get("Column13") + "','" + mJsonObject.get("Column14") + "'"
+//			    + ",'" + mJsonObject.get("Column15") + "','" + mJsonObject.get("Column16") + "'"
+//			    + ",'" + mJsonObject.get("Column17") + "','" + mJsonObject.get("Column18") + "'"
+//			    + ",'" + mJsonObject.get("Column19") + "','" + mJsonObject.get("Column20") + "'"
+//			    + ",'" + mJsonObject.get("Column21") + "','" + mJsonObject.get("Column22") + "'"
+//			    + ",'" + mJsonObject.get("Column23") + "','" + mJsonObject.get("Column24") + "'"
+//			    + ",'" + mJsonObject.get("Column25") + "','" + mJsonObject.get("Column26") + "'"
+//			    + ",'" + gClientCode + "','" + mJsonObject.get("Column28") + "'),";
+//		    //System.out.println(insertValues); 
+//		}
+//		
+//	    }
+//	    if (mJsonArray.size() > 0)
+//	    {
+//		sb = new StringBuilder(insertValues);
+//		insertValues = sb.delete(sb.lastIndexOf(","), sb.length()).toString();
+//		query = query + insertValues;
+//		sb = new StringBuilder(query);
+//		//query = sb.delete(sb.lastIndexOf(","), sb.length()).toString();
+//		retVal = dbMysql.execute(query);
+//	    }
+//	}
+//	catch (Exception e)
+//	{
+//	    e.printStackTrace();
+//	}
+//	return retVal;
+//    }
 
     public int funPostCreditBillReceiptDtlData(String formName) throws Exception
     {
