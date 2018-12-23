@@ -16693,6 +16693,7 @@ public class frmBillSettlement extends javax.swing.JFrame
 	}
     }
 
+
     private void funGenerateBillNoForBillSeriesForDirectBiller(String billSeriesPrefix, List<clsBillItemDtl> listOfItemDtl)
     {
 	try
@@ -18924,8 +18925,8 @@ public class frmBillSettlement extends javax.swing.JFrame
 		    clsGlobalVarClass.dbMysql.execute("delete from tblbilldiscdtl where strBillNo='" + voucherNo + "' ");
 		  
 	    //save bill disc dtl
-	    funSaveBillDiscDtlForBillSeries(listOfItemDtl);
-
+	    //funSaveBillDiscDtlForBillSeries(listOfItemDtl);
+	    funSaveBillDiscDtlForBillSeriesAddKOTSToBill(listOfItemDtl);
 	    _netAmount = _subTotal - dblDiscountAmt;
 	    _grandTotal = _netAmount + dblTotalTaxAmt + _deliveryCharge;
 	    _grandTotal = _grandTotal - advanceAmount;
@@ -19338,5 +19339,223 @@ public class frmBillSettlement extends javax.swing.JFrame
 	}
     }
 
+    public void funSaveBillDiscDtlForBillSeriesAddKOTSToBill(List<clsBillItemDtl> listOfItemDtl)
+    {
+	try
+	{
+	    StringBuilder sqlBillDiscDtl = new StringBuilder();
+
+	    Iterator<Map.Entry<String, clsBillDiscountDtl>> itDiscEntry = mapBillDiscDtl.entrySet().iterator();
+	    if (itDiscEntry.hasNext())
+	    {
+		Map.Entry<String, clsBillDiscountDtl> discEntry = itDiscEntry.next();
+		String key = discEntry.getKey();
+		String discOnType = key.split("!")[0];
+		String discOnValue = key.split("!")[1];
+
+		if (discOnType.equalsIgnoreCase("Total"))
+		{
+		    sqlBillDiscDtl.setLength(0);
+		    sqlBillDiscDtl.append("select a.strItemName,a.dblAmount "
+			    + " from tblitemrtemp a "
+			    + " left outer  join tblitemmaster b on (a.strItemCode=b.strItemCode or left(a.strItemCode,7)=b.strItemCode) "
+			    + " where  b.strDiscountApply='Y' and a.strTableNo='" + tableNo + "' "
+			    + " and a.strItemCode in " + objBillSettlementUtility.funGetItemCodeList(listOfItemDtl) + " ");
+		    ResultSet rsDiscOnItemWise = clsGlobalVarClass.dbMysql.executeResultSet(sqlBillDiscDtl.toString());
+		    if (rsDiscOnItemWise.next())
+		    {
+			clsBillDiscountDtl objBillDiscDtl = mapBillDiscDtl.get(key);
+			String remark = objBillDiscDtl.getRemark();
+			String reason = objBillDiscDtl.getReason();
+
+			double tempDiscAmt = 0, tempDiscPer = 0;
+			for (Map.Entry<String, clsBillItemDtl> entry : hmBillItemDtl.entrySet())
+			{
+			    clsBillItemDtl objBillItemDtl = entry.getValue();
+			    tempDiscAmt += objBillItemDtl.getDiscountAmount() * objBillItemDtl.getQuantity();
+			    tempDiscPer = objBillItemDtl.getDiscountPercentage();
+			}
+			if (_subTotal > 0)
+			{
+			    tempDiscPer = (tempDiscAmt * 100) / _subTotal;
+			}
+			dblDiscountAmt = tempDiscAmt;
+			dblDiscountPer = tempDiscPer;
+
+			sqlBillDiscDtl.setLength(0);
+			sqlBillDiscDtl.append("insert into tblbilldiscdtl values ");
+			sqlBillDiscDtl.append("('" + voucherNo + "','" + clsGlobalVarClass.gPOSCode + "','" + tempDiscAmt + "','" + tempDiscPer + "','" + _subTotal + "','" + discOnType + "','" + discOnValue + "','" + reason + "','" + remark + "','" + clsGlobalVarClass.gUserCode + "','" + clsGlobalVarClass.gUserCode + "','" + clsGlobalVarClass.getCurrentDateTime() + "','" + clsGlobalVarClass.getCurrentDateTime() + "','" + clsGlobalVarClass.gClientCode + "','N','" + clsGlobalVarClass.getPOSDateForTransaction() + "')");
+			//save total disc for bill series
+			clsGlobalVarClass.dbMysql.execute(sqlBillDiscDtl.toString());
+		    }
+		    rsDiscOnItemWise.close();
+		}
+		else if (discOnType.equalsIgnoreCase("ItemWise"))
+		{
+		    sqlBillDiscDtl.setLength(0);
+		    sqlBillDiscDtl.append("select a.strItemName,a.dblAmount "
+			    + " from tblitemrtemp a "
+			    + " left outer  join tblitemmaster b on (a.strItemCode=b.strItemCode or left(a.strItemCode,7)=b.strItemCode) "
+			    + " where  b.strDiscountApply='Y' and a.strTableNo='" + tableNo + "' "
+			    + " and a.strItemCode in " + objBillSettlementUtility.funGetItemCodeList(listOfItemDtl) + " "
+			    + " and a.strItemName = '" + discOnValue + "' ");
+		    ResultSet rsDiscOnItemWise = clsGlobalVarClass.dbMysql.executeResultSet(sqlBillDiscDtl.toString());
+		    if (rsDiscOnItemWise.next())
+		    {
+			itDiscEntry = mapBillDiscDtl.entrySet().iterator();
+			double totalDiscAmt = 0.00, finalDiscPer = 0.00;
+			for (int i = 0; itDiscEntry.hasNext(); i++)
+			{
+			    discEntry = itDiscEntry.next();
+			    key = discEntry.getKey();
+			    clsBillDiscountDtl objBillDiscDtl = discEntry.getValue();
+
+			    discOnType = key.split("!")[0];
+			    discOnValue = key.split("!")[1];
+			    String remark = objBillDiscDtl.getRemark();
+			    String reason = objBillDiscDtl.getReason();
+
+			    sqlBillDiscDtl.setLength(0);
+			    sqlBillDiscDtl.append("insert into tblbilldiscdtl values ");
+			    sqlBillDiscDtl.append("('" + voucherNo + "','" + clsGlobalVarClass.gPOSCode + "','" + objBillDiscDtl.getDiscAmt() + "','" + objBillDiscDtl.getDiscPer() + "','" + objBillDiscDtl.getDiscOnAmt() + "','" + discOnType + "','" + discOnValue + "','" + reason + "','" + remark + "','" + clsGlobalVarClass.gUserCode + "','" + clsGlobalVarClass.gUserCode + "','" + clsGlobalVarClass.getCurrentDateTime() + "','" + clsGlobalVarClass.getCurrentDateTime() + "','" + clsGlobalVarClass.gClientCode + "','N','" + clsGlobalVarClass.getPOSDateForTransaction() + "')");
+			    //save item wise disc for bill series
+			    clsGlobalVarClass.dbMysql.execute(sqlBillDiscDtl.toString());
+			    totalDiscAmt += objBillDiscDtl.getDiscAmt();
+			}
+
+			if (_subTotal == 0.00)
+			{
+			}
+			else
+			{
+			    finalDiscPer = (totalDiscAmt / _subTotal) * 100;
+			}
+			dblDiscountAmt = totalDiscAmt;
+			dblDiscountPer = finalDiscPer;
+		    }
+		    rsDiscOnItemWise.close();
+		}
+		else if (discOnType.equalsIgnoreCase("GroupWise"))
+		{
+		    itDiscEntry = mapBillDiscDtl.entrySet().iterator();
+		    double totalDiscAmt = 0.00, finalDiscPer = 0.00;
+		    for (int i = 0; itDiscEntry.hasNext(); i++)
+		    {
+			discEntry = itDiscEntry.next();
+			key = discEntry.getKey();
+			clsBillDiscountDtl objBillDiscDtl = discEntry.getValue();
+
+			discOnType = key.split("!")[0];
+			discOnValue = key.split("!")[1];
+			String remark = objBillDiscDtl.getRemark();
+			String reason = objBillDiscDtl.getReason();
+			double discPer = objBillDiscDtl.getDiscPer();
+
+			double discAmt = 0.00;
+			double discOnAmt = 0.00;
+
+			sqlBillDiscDtl.setLength(0);
+			sqlBillDiscDtl.append("select a.strItemCode,a.dblAmount,d.strGroupName "
+				+ "from tblitemrtemp a "
+				+ "left outer  join tblitemmaster b on (a.strItemCode=b.strItemCode or left(a.strItemCode,7)=b.strItemCode) "
+				+ "left outer join tblsubgrouphd c on b.strSubGroupCode=c.strSubGroupCode "
+				+ "left outer join tblgrouphd d on c.strGroupCode=d.strGroupCode "
+				+ "where  b.strDiscountApply='Y' "
+				+ "and a.strTableNo='" + tableNo + "'"
+				+ "and a.strItemCode in " + objBillSettlementUtility.funGetItemCodeList(listOfItemDtl) + " "
+				+ "and d.strGroupName='" + discOnValue + "' ");
+			ResultSet rsGroupWiseDisc = clsGlobalVarClass.dbMysql.executeResultSet(sqlBillDiscDtl.toString());
+			while (rsGroupWiseDisc.next())
+			{
+			    discOnAmt += rsGroupWiseDisc.getDouble("dblAmount");
+			}
+			discAmt = (discPer / 100) * discOnAmt;
+
+			totalDiscAmt += discAmt;
+			if (discAmt > 0)
+			{
+			    sqlBillDiscDtl.setLength(0);
+			    sqlBillDiscDtl.append("insert into tblbilldiscdtl values ");
+			    sqlBillDiscDtl.append("('" + voucherNo + "','" + clsGlobalVarClass.gPOSCode + "','" + discAmt + "','" + discPer + "','" + discOnAmt + "','" + discOnType + "','" + discOnValue + "','" + reason + "','" + remark + "','" + clsGlobalVarClass.gUserCode + "','" + clsGlobalVarClass.gUserCode + "','" + clsGlobalVarClass.getCurrentDateTime() + "','" + clsGlobalVarClass.getCurrentDateTime() + "','" + clsGlobalVarClass.gClientCode + "','N','" + clsGlobalVarClass.getPOSDateForTransaction() + "')");
+			    //save item wise disc for bill series
+			    clsGlobalVarClass.dbMysql.execute(sqlBillDiscDtl.toString());
+			}
+		    }
+		    if (_subTotal == 0.00)
+		    {
+		    }
+		    else
+		    {
+			finalDiscPer = (totalDiscAmt / _subTotal) * 100;
+		    }
+		    dblDiscountAmt = totalDiscAmt;
+		    dblDiscountPer = finalDiscPer;
+		}
+		else if (discOnType.equalsIgnoreCase("SubGroupWise"))
+		{
+		    itDiscEntry = mapBillDiscDtl.entrySet().iterator();
+		    double totalDiscAmt = 0.00, finalDiscPer = 0.00;
+		    for (int i = 0; itDiscEntry.hasNext(); i++)
+		    {
+			discEntry = itDiscEntry.next();
+			key = discEntry.getKey();
+			clsBillDiscountDtl objBillDiscDtl = discEntry.getValue();
+
+			discOnType = key.split("!")[0];
+			discOnValue = key.split("!")[1];
+			String remark = objBillDiscDtl.getRemark();
+			String reason = objBillDiscDtl.getReason();
+			double discPer = objBillDiscDtl.getDiscPer();
+
+			double discAmt = 0.00;
+			double discOnAmt = 0.00;
+
+			sqlBillDiscDtl.setLength(0);
+			sqlBillDiscDtl.append("select a.strItemCode,a.dblAmount,c.strSubGroupName "
+				+ "from tblitemrtemp a "
+				+ "left outer  join tblitemmaster b on (a.strItemCode=b.strItemCode or left(a.strItemCode,7)=b.strItemCode) "
+				+ "left outer join tblsubgrouphd c on b.strSubGroupCode=c.strSubGroupCode "
+				+ "where  b.strDiscountApply='Y' "
+				+ "and a.strTableNo='" + tableNo + "'"
+				+ "and a.strItemCode in " + objBillSettlementUtility.funGetItemCodeList(listOfItemDtl) + " "
+				+ "and c.strSubGroupName='" + discOnValue + "' ");
+
+			ResultSet rsGroupWiseDisc = clsGlobalVarClass.dbMysql.executeResultSet(sqlBillDiscDtl.toString());
+			while (rsGroupWiseDisc.next())
+			{
+			    discOnAmt += rsGroupWiseDisc.getDouble("dblAmount");
+			}
+			discAmt = (discPer / 100) * discOnAmt;
+
+			totalDiscAmt += discAmt;
+
+			if (discAmt > 0)
+			{
+			    sqlBillDiscDtl.setLength(0);
+			    sqlBillDiscDtl.append("insert into tblbilldiscdtl values ");
+			    sqlBillDiscDtl.append("('" + voucherNo + "','" + clsGlobalVarClass.gPOSCode + "','" + discAmt + "','" + discPer + "','" + discOnAmt + "','" + discOnType + "','" + discOnValue + "','" + reason + "','" + remark + "','" + clsGlobalVarClass.gUserCode + "','" + clsGlobalVarClass.gUserCode + "','" + clsGlobalVarClass.getCurrentDateTime() + "','" + clsGlobalVarClass.getCurrentDateTime() + "','" + clsGlobalVarClass.gClientCode + "','N','" + clsGlobalVarClass.getPOSDateForTransaction() + "')");
+			    //save item wise disc for bill series
+			    clsGlobalVarClass.dbMysql.execute(sqlBillDiscDtl.toString());
+			}
+		    }
+		    if (_subTotal == 0.00)
+		    {
+		    }
+		    else
+		    {
+			finalDiscPer = (totalDiscAmt / _subTotal) * 100;
+		    }
+		    dblDiscountAmt = totalDiscAmt;
+		    dblDiscountPer = finalDiscPer;
+		}
+	    }
+	}
+	catch (Exception e)
+	{
+	    objUtility.funShowDBConnectionLostErrorMessage(e);	
+	    objUtility.funWriteErrorLog(e);
+	    e.printStackTrace();
+	}
+    }
 
 }

@@ -596,6 +596,7 @@ public class frmMakeBill extends javax.swing.JFrame
 
     private void funSetCustMobileNo(String mbNo)
     {
+	String buildingCodeForHD = "";
 	try
 	{
 	    double totalBillAmount = 0.00;
@@ -611,6 +612,7 @@ public class frmMakeBill extends javax.swing.JFrame
 		{
 		    Object[] data = clsGlobalVarClass.gArrListSearchData.toArray();
 		    clsGlobalVarClass.gCustomerCode = data[0].toString();
+		    buildingCodeForHD = data[4].toString();
 		    clsGlobalVarClass.gSearchItemClicked = false;
 		    lblCustomerName.setText("<html>" + data[1].toString() + "</html>");
 		}
@@ -644,6 +646,7 @@ public class frmMakeBill extends javax.swing.JFrame
 			{
 			    Object[] data = clsGlobalVarClass.gArrListSearchData.toArray();
 			    clsGlobalVarClass.gCustomerCode = data[0].toString();
+			    buildingCodeForHD = "";
 			    clsGlobalVarClass.gSearchItemClicked = false;
 			    lblCustomerName.setText("<html>" + data[1].toString() + "</html>");
 			}
@@ -658,6 +661,7 @@ public class frmMakeBill extends javax.swing.JFrame
 			    clsGlobalVarClass.gCustomerCode = rsCust.getString(1);
 			    lblCustomerName.setText("<html>" + rsCust.getString(2) + "</html>");
 			    clsGlobalVarClass.gCustMBNo = mbNo;
+			    buildingCodeForHD = rsCust.getString(3);
 			}
 		    }
 		}

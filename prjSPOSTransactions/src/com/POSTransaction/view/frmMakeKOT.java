@@ -2458,7 +2458,7 @@ public class frmMakeKOT extends javax.swing.JFrame
 	    funPLUButtonPressed();
 	}
     }
-
+    
     private void funCheckKOTButtonAction() throws Exception
     {
 	if (txtTableNo.getText().equals(""))
@@ -2473,18 +2473,19 @@ public class frmMakeKOT extends javax.swing.JFrame
 	{
 	    if (!funCheckKOTSave())
 	    {
+		// Done Y hardcoded for print Check KOT 22-12-2018
 		if ("Text File".equalsIgnoreCase(clsGlobalVarClass.gPrintType))
 		{
 
 		    clsKOTGeneration objKOTGeneration = new clsKOTGeneration();
 
-		    objKOTGeneration.funCkeckKotTextFile(globalTableNo, txtWaiterNo.getText().trim(), "N", "");
+		    objKOTGeneration.funCkeckKotTextFile(globalTableNo, txtWaiterNo.getText().trim(), "Y", "");
 		}
 		else
 		{
 		    clsKOTGeneration objKOTGeneration = new clsKOTGeneration();
 
-		    objKOTGeneration.funCkeckKotForJasper(globalTableNo, txtWaiterNo.getText().trim(), "N");
+		    objKOTGeneration.funCkeckKotForJasper(globalTableNo, txtWaiterNo.getText().trim(), "Y");
 		}
 	    }
 	    else

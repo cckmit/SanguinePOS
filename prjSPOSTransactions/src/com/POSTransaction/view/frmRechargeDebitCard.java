@@ -513,8 +513,12 @@ public class frmRechargeDebitCard extends javax.swing.JFrame
 			+ "',strReachrgeRemark='" + remarks + "',strRefMemberCode='" + memberCodeForRecharge + "'"
 			+ " where strCardNo='" + txtCardNo.getText() + "'";
 		clsGlobalVarClass.dbMysql.execute(sql);
-
-		funGenerateRechargeTextfile(txtAmount.getText(), txtCFBalance.getText(), rechargeSlipNoToInsert, memberCodeForRecharge, lblMemberName.getText(), txtCardTypeName.getText(), txtDeposit.getText(), txtCardNo.getText());
+		double dblTotCfBalance= Double.parseDouble(txtCFBalance.getText().trim());
+		if(redeemable.equals("N")){
+		    dblTotCfBalance -=Double.parseDouble(txtDeposit.getText().trim());
+		}
+		//funGenerateRechargeTextfile(txtAmount.getText(), txtCFBalance.getText(), rechargeSlipNoToInsert, memberCodeForRecharge, lblMemberName.getText(), txtCardTypeName.getText(), txtDeposit.getText(), txtCardNo.getText());
+		funGenerateRechargeTextfile(txtAmount.getText(), String.valueOf(dblTotCfBalance), rechargeSlipNoToInsert, memberCodeForRecharge, lblMemberName.getText(), txtCardTypeName.getText(), txtDeposit.getText(), txtCardNo.getText());
 		lblRechargeNo.setText(recahrgeNoToInsert);
 		txtCFBalance.setText(String.valueOf(redeemableAmount));
 
@@ -866,13 +870,13 @@ public class frmRechargeDebitCard extends javax.swing.JFrame
 	    pw.flush();
 	    pw.close();
 
-	    objUtility.funPrintReportToPrinter(clsGlobalVarClass.gBillPrintPrinterPort, filePath);
+	    objUtility.funPrintTextDocumentsToPrinter(clsGlobalVarClass.gBillPrintPrinterPort, filePath);
 
 	    if (clsGlobalVarClass.gShowBill)
 	    {
 		clsPrintingUtility objPrintingUtility = new clsPrintingUtility();
 
-		objPrintingUtility.funShowTextFile(textFile, "Debit Card Recharge", "");
+		objPrintingUtility.funShowTextFile(textFile, "Debit Card Recharge", clsGlobalVarClass.gBillPrintPrinterPort);
 	    }
 	}
 	catch (Exception e)
