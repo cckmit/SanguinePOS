@@ -394,7 +394,7 @@ public class clsStructureUpdater
 	funCheckMasterTableEntry("PromoGroup");
 	funCheckMasterTableEntry("DiscountMaster");
 	funCheckMasterTableEntry("BillSeries");
-	funCheckMasterTableEntry("POS");
+	//funCheckMasterTableEntry("POS");
 	funCheckMasterTableEntry("SubMenuHead");
     }
 
