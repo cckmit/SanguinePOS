@@ -218,6 +218,7 @@ public class frmDayEndFlash extends javax.swing.JFrame
 	    dm.addColumn("Net Sale");
 	    dm.addColumn("Gross Sale");
 	    dm.addColumn("APC");
+	    dm.addColumn("JV No");
 
 	    double sumtSale = 0.00, sumFloat = 0.00, sumCash = 0.00, sumAdvance = 0.00, sumTransferIn = 0.00, sumTotalReceipt = 0.00;
 	    double sumPay = 0.00, sumWithDrawal = 0.00, sumTransferOut = 0.00, sumTotalPay = 0.00, sumCashInhand = 0.00;
@@ -239,7 +240,7 @@ public class frmDayEndFlash extends javax.swing.JFrame
 	    sbSql.append("select b.strPOSName,DATE_FORMAT(date(a.dtePOSDate),'%d-%m-%Y'),dblHDAmt,dblDiningAmt,dblTakeAway,dblTotalSale,dblFloat"
 		    + ",dblCash,dblAdvance,dblTransferIn,dblTotalReceipt,dblPayments,dblWithdrawal,dblTransferOut,dblRefund"
 		    + ",dblTotalPay,dblCashInHand,dblNoOfBill,dblNoOfVoidedBill,dblNoOfModifyBill,strWSStockAdjustmentNo,strExciseBillGeneration "
-		    + " ,a.dblNetSale,a.dblGrossSale,a.dblAPC"
+		    + " ,a.dblNetSale,a.dblGrossSale,a.dblAPC,a.strJVNo"
 		    + " from tbldayendprocess a,tblposmaster b where a.strPOSCode=b.strPOSCode ");
 
 	    if ("All".equals(cmbPosCode.getSelectedItem()))
@@ -262,7 +263,18 @@ public class frmDayEndFlash extends javax.swing.JFrame
 	    {
 		Object[] row =
 		{
-		    rs.getString(1), rs.getString(2), gDecimalFormat.format(rs.getDouble(3)), gDecimalFormat.format(rs.getDouble(4)), gDecimalFormat.format(rs.getDouble(5)), gDecimalFormat.format(rs.getDouble(6)), gDecimalFormat.format(rs.getDouble(7)), gDecimalFormat.format(rs.getDouble(8)), gDecimalFormat.format(rs.getDouble(9)), gDecimalFormat.format(rs.getDouble(10)), gDecimalFormat.format(rs.getDouble(11)), gDecimalFormat.format(rs.getDouble(12)), gDecimalFormat.format(rs.getDouble(13)), gDecimalFormat.format(rs.getDouble(14)), gDecimalFormat.format(rs.getDouble(15)), gDecimalFormat.format(rs.getDouble(16)), gDecimalFormat.format(rs.getDouble(17)), decFormat.format(rs.getDouble(18)), decFormat.format(rs.getDouble(19)), decFormat.format(rs.getDouble(20)), rs.getString(21), rs.getString(22), gDecimalFormat.format(rs.getDouble(23)), gDecimalFormat.format(rs.getDouble(24)), gDecimalFormat.format(rs.getDouble(25))
+		    rs.getString(1), rs.getString(2), gDecimalFormat.format(rs.getDouble(3)), 
+		    gDecimalFormat.format(rs.getDouble(4)), gDecimalFormat.format(rs.getDouble(5)), 
+		    gDecimalFormat.format(rs.getDouble(6)), gDecimalFormat.format(rs.getDouble(7)), 
+		    gDecimalFormat.format(rs.getDouble(8)), gDecimalFormat.format(rs.getDouble(9)), 
+		    gDecimalFormat.format(rs.getDouble(10)), gDecimalFormat.format(rs.getDouble(11)), 
+		    gDecimalFormat.format(rs.getDouble(12)), gDecimalFormat.format(rs.getDouble(13)), 
+		    gDecimalFormat.format(rs.getDouble(14)), gDecimalFormat.format(rs.getDouble(15)), 
+		    gDecimalFormat.format(rs.getDouble(16)), gDecimalFormat.format(rs.getDouble(17)), 
+		    decFormat.format(rs.getDouble(18)), decFormat.format(rs.getDouble(19)), 
+		    decFormat.format(rs.getDouble(20)), rs.getString(21), rs.getString(22), 
+		    gDecimalFormat.format(rs.getDouble(23)), gDecimalFormat.format(rs.getDouble(24)), 
+		    gDecimalFormat.format(rs.getDouble(25)),rs.getString(26),
 		};
 
 		sumtSale = sumtSale + rs.getDouble("dblTotalSale");
@@ -358,7 +370,6 @@ public class frmDayEndFlash extends javax.swing.JFrame
 	    tblTotal.getColumnModel().getColumn(22).setPreferredWidth(100);
 	    tblTotal.getColumnModel().getColumn(23).setPreferredWidth(100);
 	    tblTotal.getColumnModel().getColumn(24).setPreferredWidth(100);
-
 	}
 	catch (Exception e)
 	{
@@ -409,7 +420,7 @@ public class frmDayEndFlash extends javax.swing.JFrame
 	    TableModel model = table.getModel();
 	    sheet1.addCell(new Label(3, 0, "DSS Java Pos Audit Flash Report "));
 	    //sheet1.addCell(new Label(0,2,"gsdfg "));
-	    for (int i = 0; i < model.getColumnCount() + 1; i++)
+	    for (int i = 0; i < model.getColumnCount(); i++)
 	    {
 		Label column = new Label(i, 1, model.getColumnName(i));
 		sheet1.addCell(column);
@@ -443,7 +454,7 @@ public class frmDayEndFlash extends javax.swing.JFrame
 	    ex.printStackTrace();
 	}
     }
-
+    
     /**
      *
      * Add last Export File Modifed Bill Voided Bill Line Void Void Kot
